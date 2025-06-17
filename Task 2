@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Responsive Navbar</title>
+    <h1 style="text-align: center;" >Task 2</h1>
+    <style>
+        /* Color Variables */
+        :root {
+            --primary: #6e48aa;
+            --secondary: #9d50bb;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --hover: rgba(255,255,255,0.1);
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: var(--light);
+        }
+
+        /* Navbar Container */
+        .navbar-container {
+            background: var(--dark);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        /* Main Navigation Grid */
+        .navbar {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            height: 70px;
+        }
+
+        /* Logo Section */
+        .logo {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo-icon {
+            font-size: 2rem;
+        }
+
+        /* Main Menu */
+        .main-menu {
+            display: grid;
+            grid-template-columns: repeat(5, auto);
+            list-style: none;
+            justify-self: center;
+        }
+
+        .menu-item {
+            position: relative;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 1rem 1.5rem;
+            display: block;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            background: var(--hover);
+        }
+
+        /* Dropdown Menu */
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            width: 220px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 0 0 8px 8px;
+            z-index: 100;
+        }
+
+        .menu-item:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-link {
+            color: var(--dark);
+            padding: 0.8rem 1.5rem;
+            display: block;
+            border-bottom: 1px solid #eee;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-link:hover {
+            background: #f5f5f5;
+            padding-left: 1.8rem;
+            color: var(--primary);
+        }
+
+        /* Search Bar */
+        .search-container {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            width: 250px;
+            height: 40px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .search-container:focus-within {
+            background: rgb(238, 227, 227);
+        }
+
+        .search-input {
+            border: none;
+            background: transparent;
+            padding: 0 15px;
+            color: rgb(245, 231, 231);
+            outline: none;
+        }
+
+        .search-container:focus-within .search-input {
+            color: var(--dark);
+        }
+
+        .search-btn {
+            background: transparent;
+            border: none;
+            color: rgb(233, 212, 212);
+            padding: 0 15px;
+            cursor: pointer;
+        }
+
+        .search-container:focus-within .search-btn {
+            color: var(--primary);
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-toggle {
+            display: none;
+            color: rgb(235, 215, 215);
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 1rem;
+        }
+
+        /* Mobile Menu Styles */
+        @media (max-width: 992px) {
+            .navbar {
+                grid-template-columns: 1fr auto auto;
+            }
+            
+            .main-menu {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: var(--dark);
+                grid-template-columns: 1fr;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.5s ease;
+            }
+            
+            .main-menu.active {
+                max-height: 500px;
+            }
+            
+            .menu-item {
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+            
+            .dropdown-menu {
+                position: static;
+                width: 100%;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                display: none;
+                background: rgba(0,0,0,0.1);
+                box-shadow: none;
+                border-radius: 0;
+            }
+            
+            .dropdown-link {
+                color: rgb(230, 213, 213);
+                padding-left: 2.5rem;
+                border-bottom: none;
+            }
+            
+            .menu-item:hover .dropdown-menu {
+                display: block;
+            }
+            
+            .mobile-toggle {
+                display: block;
+                order: 3;
+            }
+            
+            .search-container {
+                order: 2;
+                width: 200px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .search-container {
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                border-radius: 0;
+                background: rgba(0,0,0,0.2);
+            }
+            
+            .search-container:focus-within {
+                background: rgb(230, 220, 220);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar-container">
+        <nav class="navbar">
+            <a href="#" class="logo">
+                <span class="logo-icon">🌐</span>
+                <span>LOGO</span>
+            </a>
+            
+            <ul class="main-menu">
+                <li class="menu-item">
+                    <a href="#" class="nav-link">Home</a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="nav-link">Products</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" class="dropdown-link">Web Design</a></li>
+                        <li><a href="#" class="dropdown-link">Graphic Design</a></li>
+                        <li><a href="#" class="dropdown-link">UI/UX</a></li>
+                        <li><a href="#" class="dropdown-link">Mobile Apps</a></li>
+                    </ul>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="nav-link">Services</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" class="dropdown-link">Consulting</a></li>
+                        <li><a href="#" class="dropdown-link">Development</a></li>
+                        <li><a href="#" class="dropdown-link">Marketing</a></li>
+                    </ul>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="nav-link">About</a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="nav-link">Contact</a>
+                </li>
+            </ul>
+            
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search...">
+                <button class="search-btn">🔍</button>
+            </div>
+            
+            <div class="mobile-toggle" onclick="document.querySelector('.main-menu').classList.toggle('active')">
+                ☰
+            </div>
+        </nav>
+    </div>
+    
+    <div style="height: 1500px; padding: 2rem;">
+        <h1>Scroll down to see sticky navbar in action</h1>
+        <p>Resize the browser window to see the responsive behavior</p>
+    </div>
+    
+    <script>
+        // Add dropdown toggle for mobile
+        document.querySelectorAll('.menu-item').forEach(item => {
+            if (window.innerWidth <= 992) {
+                item.addEventListener('click', function(e) {
+                    if (this.querySelector('.dropdown-menu')) {
+                        e.preventDefault();
+                        this.querySelector('.dropdown-menu').style.display = 
+                            this.querySelector('.dropdown-menu').style.display === 'block' ? 'none' : 'block';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
